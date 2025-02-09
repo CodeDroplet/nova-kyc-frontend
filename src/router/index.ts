@@ -1,12 +1,34 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
 
 import Dashboard from "@/pages/Dashboard.vue";
+import Register from "@/pages/auth/Register.vue";
+import { useAuthStore } from "@/stores/authStore";
 
-const routes: RouteRecordRaw[] = [{ path: "/", component: Dashboard, name: "dashboard" }];
+const routes: RouteRecordRaw[] = [
+  {
+    path: "/",
+    component: Dashboard,
+    name: "dashboard",
+
+    beforeEnter: (_to, _from, next) => {
+      const authStore = useAuthStore();
+      if (!authStore.token) {
+        next({ name: "register" });
+        return;
+      }
+      next();
+    },
+  },
+  {
+    path: "/auth/register",
+    component: Register,
+    name: "register",
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes,
+  routes,
 });
 
 export default router;
