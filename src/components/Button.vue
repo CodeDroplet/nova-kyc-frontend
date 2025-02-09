@@ -14,13 +14,13 @@ const props = defineProps<{
 
 const buttonClasses = computed(() => {
     return cva(
-        "px-4 py-1.5 cursor-pointer transition-color rounded-md ",
+        "px-4 py-1.5 cursor-pointer transition-color rounded-md font-medium",
         {
             variants: {
                 variant: {
                     primary: "bg-slate-800 text-white hover:bg-slate-900",
-                    secondary: "bg-gray-500",
-                    danger: "bg-red-500",
+                    secondary: "bg-gray-500 ",
+                    danger: "bg-red-500 text-white",
                 },
             },
             defaultVariants: {

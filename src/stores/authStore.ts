@@ -16,11 +16,17 @@ export const useAuthStore = defineStore(
       user.value = newUser;
     }
 
+    function logout() {
+      token.value = null;
+      user.value = null;
+    }
+
     return {
       token,
       setToken,
       user,
       setUser,
+      logout,
     };
   },
   {
