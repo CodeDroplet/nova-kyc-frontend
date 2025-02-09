@@ -109,7 +109,8 @@ const submit = handleSubmit((values) => {
         </div>
         <Button type="submit" class="w-full">Register</Button>
         <div class="text-center mt-4">
-          <p class="text-gray-500">Already have an account? <RouterLink to="/login" class="text-blue-500">Login here
+          <p class="text-gray-500">Already have an account? <RouterLink :to="{ name: 'login' }" class="text-blue-500">
+              Login here
             </RouterLink>
           </p>
         </div>

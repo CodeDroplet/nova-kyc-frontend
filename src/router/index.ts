@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router"
 
 import Dashboard from "@/pages/Dashboard.vue";
 import Register from "@/pages/auth/Register.vue";
+import Login from "@/pages/auth/Login.vue";
 import { useAuthStore } from "@/stores/authStore";
 
 const routes: RouteRecordRaw[] = [
@@ -13,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: (_to, _from, next) => {
       const authStore = useAuthStore();
       if (!authStore.token) {
-        next({ name: "register" });
+        next({ name: "login" });
         return;
       }
       next();
@@ -23,6 +24,11 @@ const routes: RouteRecordRaw[] = [
     path: "/auth/register",
     component: Register,
     name: "register",
+  },
+  {
+    path: "/auth/login",
+    component: Login,
+    name: "login",
   },
 ];
 
