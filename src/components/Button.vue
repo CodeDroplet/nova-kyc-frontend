@@ -14,7 +14,7 @@ const props = defineProps<{
 
 const buttonClasses = computed(() => {
     return cva(
-        "px-4 py-1.5 cursor-pointer transition-color rounded-md font-medium",
+        "px-4 py-1.5 cursor-pointer transition-color rounded-md font-regular",
         {
             variants: {
                 variant: {

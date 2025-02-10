@@ -14,7 +14,7 @@ const handleLogout = () => {
 
 <template>
     <div class="flex justify-center py-10 min-h-screen bg-slate-100">
-        <div class="md:max-w-xl w-full px-4">
+        <div class="md:max-w-2xl w-full px-4">
             <div class="flex justify-between items-center mb-6">
                 <div class="flex flex-col">
                     <h1 class="text-2xl font-bold text-gray-800">Welcome to Dashboard</h1>
