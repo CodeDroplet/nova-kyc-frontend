@@ -1,5 +1,61 @@
-# Vue 3 + TypeScript + Vite
+# KYC Frontend Application
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A Vue.js frontend application for managing KYC (Know Your Customer) requests.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn package manager
+- Running backend API server (default: http://localhost:3000)
+
+## Setup Instructions
+
+1. Install dependencies:
+
+```bash
+npm install
+# or
+yarn
+```
+
+2. Configure environment variables:
+
+   - Copy `.env` file to `.env.local` (if you need to customize)
+   - Update `VITE_API_URL` if your backend runs on a different URL
+
+3. Run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+4. Open your browser and navigate to:
+
+```
+http://localhost:5173
+```
+
+## Build for Production
+
+To create a production build:
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+The built files will be in the `dist` directory.
+
+## Tech Stack
+
+- Vue 3
+- TypeScript
+- Vite
+- Vue Router
+- Pinia (State Management)
+- TailwindCSS
+- Vue Query
+- Vee-validate + Yup
