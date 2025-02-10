@@ -4,11 +4,9 @@ import KycStatus from '@/features/KycStatus.vue';
 import UsersList from '@/features/UsersList.vue';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import AuthService from '@/services/AuthService';
-import { useAuthStore } from '@/stores/authStore';
 import { useQuery } from '@tanstack/vue-query';
+import Report from '@/features/Report.vue';
 
-
-const authStore = useAuthStore();
 
 const { data: res, isFetching } = useQuery({
   queryKey: ['me'],
@@ -24,7 +22,10 @@ const { data: res, isFetching } = useQuery({
       <div class="py-5 text-center">Loading please wait.</div>
     </template>
     <template v-else>
-      <UsersList v-if="res?.data.user.role === 'admin'" />
+      <template v-if="res?.data.user.role === 'admin'">
+        <Report class="mb-8" />
+        <UsersList />
+      </template>
       <template v-else>
         <CreateKycRequest v-if="res?.data.user.kycRequestsStatus === null" />
         <KycStatus v-else />

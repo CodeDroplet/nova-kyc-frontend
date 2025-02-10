@@ -31,6 +31,7 @@ const updateKycMutation = useMutation({
         // Invalidate and refetch users list
         queryClient.invalidateQueries({ queryKey: ['users'] });
         queryClient.invalidateQueries({ queryKey: ['kyc', values.userId] });
+        queryClient.invalidateQueries({ queryKey: ['reports'] });
     },
 });
 
@@ -58,48 +59,52 @@ const handleReject = async (userId: number) => {
 </script>
 
 <template>
-    <Table v-if="users">
-        <TableHead>
-            <TableRow>
-                <TableCell isHeader>First Name</TableCell>
-                <TableCell isHeader>Last Name</TableCell>
-                <TableCell isHeader>Email</TableCell>
-                <TableCell isHeader>Status</TableCell>
-                <TableCell isHeader>Actions</TableCell>
-                <TableCell isHeader></TableCell>
-            </TableRow>
-        </TableHead>
-        <TableBody>
-            <template v-for="user in users" :key="user.email">
+    <div class="border border-slate-200 rounded-lg">
+        <Table v-if="users">
+            <TableHead>
                 <TableRow>
-                    <TableCell>{{ user.firstName }}</TableCell>
-                    <TableCell>{{ user.lastName }}</TableCell>
-                    <TableCell>{{ user.email }}</TableCell>
-                    <TableCell>
-                        <Badge v-bind="getKycStatusBadgeProps(user.kycRequestsStatus)" />
-                    </TableCell>
-                    <TableCell>
-                        <div class="flex gap-2">
-                            <Button variant="primary" size="sm" @click="handleApprove(user.id)">
-                                Approve
-                            </Button>
-                            <Button variant="danger" size="sm" @click="handleReject(user.id)">
-                                Reject
-                            </Button>
-                        </div>
-                    </TableCell>
-                    <TableCell>
-                        <button @click="toggleExpand(user.id)" class="p-1 text-gray-600 hover:text-gray-900">
-                            <component :is="expandedUserId === user.id ? ChevronDown : ChevronRight" class="w-5 h-5" />
-                        </button>
-                    </TableCell>
+                    <TableCell isHeader>First Name</TableCell>
+                    <TableCell isHeader>Last Name</TableCell>
+                    <TableCell isHeader>Email</TableCell>
+                    <TableCell isHeader>Status</TableCell>
+                    <TableCell isHeader>Actions</TableCell>
+                    <TableCell isHeader></TableCell>
                 </TableRow>
-                <TableRow v-if="expandedUserId === user.id">
-                    <TableCell :colspan="6" class="bg-gray-50">
-                        <KycStatus :userId="user.id" />
-                    </TableCell>
-                </TableRow>
-            </template>
-        </TableBody>
-    </Table>
+            </TableHead>
+            <TableBody>
+                <template v-for="user in users" :key="user.email">
+                    <TableRow>
+                        <TableCell>{{ user.firstName }}</TableCell>
+                        <TableCell>{{ user.lastName }}</TableCell>
+                        <TableCell>{{ user.email }}</TableCell>
+                        <TableCell>
+                            <Badge v-bind="getKycStatusBadgeProps(user.kycRequestsStatus)" />
+                        </TableCell>
+                        <TableCell>
+                            <div class="flex gap-2">
+                                <Button variant="primary" size="sm" @click="handleApprove(user.id)">
+                                    Approve
+                                </Button>
+                                <Button variant="danger" size="sm" @click="handleReject(user.id)">
+                                    Reject
+                                </Button>
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <button @click="toggleExpand(user.id)" class="p-1 text-gray-600 hover:text-gray-900">
+                                <component :is="expandedUserId === user.id ? ChevronDown : ChevronRight"
+                                    class="w-5 h-5" />
+                            </button>
+                        </TableCell>
+                    </TableRow>
+                    <TableRow v-if="expandedUserId === user.id">
+                        <TableCell :colspan="6" class="bg-gray-50">
+                            <KycStatus :userId="user.id" />
+                        </TableCell>
+                    </TableRow>
+                </template>
+            </TableBody>
+        </Table>
+    </div>
+
 </template>
