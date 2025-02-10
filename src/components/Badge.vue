@@ -13,7 +13,7 @@ interface Props {
     variant?: 'success' | 'warning' | 'error' | 'info';
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
     variant: 'info'
 });
 
