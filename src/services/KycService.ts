@@ -22,6 +22,24 @@ class KycService {
     const response = await request.get<KycRequestResponse>("/kyc");
     return response.data;
   }
+
+  static async getUserRequest(userId: number) {
+    const response = await request.get<KycRequestResponse>(`/kyc/${userId}`);
+    return response.data;
+  }
+
+  static async updateRequestStatus(userId: number, status: "approved" | "rejected") {
+    const userRequest = await this.getUserRequest(userId);
+
+    const response = await request.patch<KycRequestResponse>(
+      `/kyc/${userRequest.data.kycRequest.id}`,
+      {
+        status,
+      }
+    );
+
+    return response.data;
+  }
 }
 
 export default KycService;

@@ -5,9 +5,15 @@ import Card from '@/components/Card.vue';
 import Badge from '@/components/Badge.vue';
 import getUploadUrl from '@/utils/getUploadUrl';
 
+
+const props = withDefaults(defineProps<{
+    userId?: number;
+}>(), {
+});
+
 const { data: kycData, isLoading } = useQuery({
-    queryKey: ['kyc'],
-    queryFn: KycService.getMyRequest
+    queryKey: ['kyc', props.userId],
+    queryFn: props.userId ? () => KycService.getUserRequest(props.userId!) : KycService.getMyRequest
 });
 
 const getStatusBadge = (status: string | undefined) => {
