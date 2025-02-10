@@ -1,4 +1,9 @@
-import type { LoginData, RegisterData, RegisterResponseData } from "@/types/auth";
+import {
+  type GetMeResponseData,
+  type LoginData,
+  type RegisterData,
+  type RegisterResponseData,
+} from "@/types/auth";
 import request from "../utils/request";
 
 class AuthService {
@@ -9,6 +14,11 @@ class AuthService {
 
   static async login(data: LoginData) {
     const response = await request.post<RegisterResponseData>("/auth/login", data);
+    return response.data;
+  }
+
+  static async me() {
+    const response = await request.get<GetMeResponseData>("/auth/me");
     return response.data;
   }
 }

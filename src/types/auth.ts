@@ -17,3 +17,7 @@ export type RegisterResponseData = BaseResponse<{
   token: string;
   user: User;
 }>;
+
+export type GetMeResponseData = BaseResponse<{
+  user: User;
+}>;
