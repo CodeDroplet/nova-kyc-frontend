@@ -35,7 +35,7 @@ const { handleSubmit, errors, defineField, setErrors } = useForm({
 });
 
 
-const mutation = useMutation({
+const { mutate: register, error: registerError, isPending } = useMutation({
   mutationKey: ['register'],
   mutationFn: AuthService.register
 });
@@ -52,7 +52,7 @@ const [password, passwordAttrs] = defineField('password');
 
 
 const submit = handleSubmit((values) => {
-  mutation.mutate(values, {
+  register(values, {
     onError: (error) => {
       if (error instanceof ApiValidationError) {
         setErrors(error.getFormattedErrors());
@@ -80,8 +80,8 @@ const submit = handleSubmit((values) => {
         </p>
       </div>
 
-      <div v-if="mutation.error.value">
-        <Alert variant="error" :message="mutation.error.value.message" class="mb-4" />
+      <div v-if="registerError">
+        <Alert variant="error" :message="registerError.message" class="mb-4" />
       </div>
 
       <form @submit.prevent="submit">
@@ -107,7 +107,7 @@ const submit = handleSubmit((values) => {
             <FormError :error="errors.password" />
           </FormGroup>
         </div>
-        <Button type="submit" class="w-full">Register</Button>
+        <Button type="submit" class="w-full" :is-loading="isPending">Register</Button>
         <div class="text-center mt-4">
           <p class="text-gray-500">Already have an account? <RouterLink :to="{ name: 'login' }" class="text-blue-500">
               Login here

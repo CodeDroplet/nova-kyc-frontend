@@ -9,6 +9,7 @@ import KycService from '@/services/KycService';
 import { ChevronDown, ChevronRight } from '@vicons/tabler';
 import type { User } from '@/types/user';
 import KycStatus from './KycStatus.vue';
+import { Loader } from '@vicons/tabler';
 
 
 const expandedUserId = ref<number | null>(null);
@@ -17,14 +18,14 @@ const toggleExpand = (userId: number) => {
     expandedUserId.value = expandedUserId.value === userId ? null : userId;
 };
 
-const { data: users } = useQuery<User[]>({
+const { data: users, isLoading } = useQuery<User[]>({
     queryKey: ['users'],
     queryFn: UserService.getUsers,
 });
 
 const queryClient = useQueryClient();
 
-const updateKycMutation = useMutation({
+const { mutate: updateKyc, isPending: isUpdateKycPending, variables, reset } = useMutation({
     mutationFn: (params: { userId: number; status: 'approved' | 'rejected' }) =>
         KycService.updateRequestStatus(params.userId, params.status),
     onSuccess: (_res, values) => {
@@ -34,6 +35,7 @@ const updateKycMutation = useMutation({
         queryClient.invalidateQueries({ queryKey: ['reports'] });
     },
 });
+
 
 const getKycStatusBadgeProps = (status: string | undefined) => {
     switch (status) {
@@ -48,18 +50,24 @@ const getKycStatusBadgeProps = (status: string | undefined) => {
     }
 };
 
-const handleApprove = async (userId: number) => {
-    console.log('Approving KYC request for user:', userId);
-    await updateKycMutation.mutateAsync({ userId, status: 'approved' });
+const handleApprove = (userId: number) => {
+    updateKyc({ userId, status: 'approved' }, {
+        onSettled: reset
+    });
 };
 
-const handleReject = async (userId: number) => {
-    await updateKycMutation.mutateAsync({ userId, status: 'rejected' });
+const handleReject = (userId: number) => {
+    updateKyc({ userId, status: 'rejected' }, {
+        onSettled: reset
+    });
 };
 </script>
 
 <template>
     <div class="border border-slate-200 rounded-lg">
+        <div v-if="isLoading" class="p-5 flex items-center justify-center">
+            <Loader class="w-6 h-6 animate-spin" />
+        </div>
         <Table v-if="users">
             <TableHead>
                 <TableRow>
@@ -82,10 +90,16 @@ const handleReject = async (userId: number) => {
                         </TableCell>
                         <TableCell>
                             <div class="flex gap-2">
-                                <Button variant="primary" size="sm" @click="handleApprove(user.id)">
+                                <Button variant="primary" size="sm"
+                                    :disabled="isUpdateKycPending || !user.kycRequestsStatus"
+                                    :is-loading="variables?.userId === user.id && variables.status === 'approved'"
+                                    @click="handleApprove(user.id)">
                                     Approve
                                 </Button>
-                                <Button variant="danger" size="sm" @click="handleReject(user.id)">
+                                <Button variant="danger" size="sm"
+                                    :disabled="isUpdateKycPending || !user.kycRequestsStatus"
+                                    :is-loading="variables?.userId === user.id && variables.status === 'rejected'"
+                                    @click="handleReject(user.id)">
                                     Reject
                                 </Button>
                             </div>

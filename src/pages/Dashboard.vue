@@ -6,6 +6,7 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import AuthService from '@/services/AuthService';
 import { useQuery } from '@tanstack/vue-query';
 import Report from '@/features/Report.vue';
+import { Loader } from '@vicons/tabler';
 
 
 const { data: res, isFetching } = useQuery({
@@ -19,7 +20,9 @@ const { data: res, isFetching } = useQuery({
 <template>
   <DashboardLayout>
     <template v-if="isFetching">
-      <div class="py-5 text-center">Loading please wait.</div>
+      <div class="py-5 flex items-center justify-center">
+        <Loader class="w-6 h-6 animate-spin" />
+      </div>
     </template>
     <template v-else>
       <template v-if="res?.data.user.role === 'admin'">
