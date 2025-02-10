@@ -1,7 +1,7 @@
 import axios from "axios";
 import ApiValidationError from "./ApiValidationError";
 import { useAuthStore } from "@/stores/authStore";
-import { useRouter } from "vue-router";
+import router from "@/router";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -22,7 +22,6 @@ request.interceptors.response.use(
   (error) => {
     const { data } = error.response || {};
 
-    const router = useRouter();
     const store = useAuthStore();
 
     if (data?.status === "error") {
